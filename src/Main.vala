@@ -61,17 +61,16 @@ namespace Komorebi {
 
         Gtk.Settings.get_default().gtk_application_prefer_dark_theme = true;
 
-        var screen = Gdk.Screen.get_default ();
-        int monitorCount = screen.get_n_monitors();
+        var screen = Gdk.Screen.get_default();
+        int monitor = screen.get_primary_monitor();
 
 
         initializeClipboard(screen);
 
         readWallpaperFile();
 
-        backgroundWindows = new BackgroundWindow[monitorCount];
-        for (int i = 0; i < monitorCount; ++i)
-            backgroundWindows[i] = new BackgroundWindow(i);
+        backgroundWindows = new BackgroundWindow[1];
+        backgroundWindows[0] = new BackgroundWindow(monitor);
 
 
         var mainSettings = Gtk.Settings.get_default ();
@@ -80,8 +79,7 @@ namespace Komorebi {
         mainSettings.set("gtk-xft-rgba" , "none", null);
         mainSettings.set("gtk-xft-hintstyle" , "slight", null);
 
-        for (int i = 0; i < monitorCount; ++i)
-            backgroundWindows[i].fadeIn();
+        backgroundWindows[0].fadeIn();
 
         Clutter.main();
     }
