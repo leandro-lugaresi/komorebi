@@ -86,7 +86,7 @@ namespace WallpaperCreator.OnScreen {
 
             chooseThumbnailButton.set_filter (imageFilter);
             chooseThumbnailButton.width_chars = 10;
-            
+
             locationEntry.set_sensitive(false);
 
             // Signals
@@ -107,9 +107,9 @@ namespace WallpaperCreator.OnScreen {
                     chooseFileLabel.label = "Where is the image located?";
                     locationEntry.placeholder_text = "/Users/cheesecakeufo/my_picture.jpg";
                     locationEntry.set_sensitive(false);
-                 
+
                     revealer.set_reveal_child(false);
-                
+
                     chooseFileButton.show();
 
                 } else if(wallpaperType == "web_page") {
@@ -120,7 +120,7 @@ namespace WallpaperCreator.OnScreen {
                     locationEntry.set_sensitive(true);
 
                     revealer.set_reveal_child(true);
-                
+
                     chooseFileButton.hide();
 
                 } else {
@@ -129,9 +129,9 @@ namespace WallpaperCreator.OnScreen {
                     chooseFileLabel.label = "Where is the video located?";
                     locationEntry.placeholder_text = "/Users/cheesecakeufo/my_video.mp4";
                     locationEntry.set_sensitive(false);
-                    
+
                     revealer.set_reveal_child(true);
-                 
+
                     chooseFileButton.show();
                 }
 
@@ -160,7 +160,7 @@ namespace WallpaperCreator.OnScreen {
             titleBox.add(titleLabel);
             titleBox.add(aboutLabel);
 
-            aboutGrid.attach(new Image.from_file("/System/Resources/Komorebi/wallpaper_creator.svg"), 0, 0, 1, 1);
+            aboutGrid.attach(new Image.from_file("/usr/share/komorebi/wallpaper_creator.svg"), 0, 0, 1, 1);
             aboutGrid.attach(titleBox, 1, 0, 1, 1);
 
             thumbnailBox.add(chooseThumbnailLabel);
@@ -180,7 +180,7 @@ namespace WallpaperCreator.OnScreen {
 
             add(chooseFileLabel);
             add(locationBox);
-            
+
             add(revealer);
         }
     }

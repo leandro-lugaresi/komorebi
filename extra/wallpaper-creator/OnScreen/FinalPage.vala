@@ -20,16 +20,12 @@ using Gtk;
 namespace WallpaperCreator.OnScreen {
 
     public class FinalPage : Box {
-
-        Image logo = new Image.from_file("/System/Resources/Komorebi/done.svg");
-
+        Image logo = new Image.from_file("/usr/share/komorebi/done.svg");
         Label titleLabel = new Label("");
         Label descLabel = new Label("");
-
         Button closeButton = new Button.with_label("Close");
 
         public FinalPage() {
-
             spacing = 10;
             hexpand = true;
             vexpand = true;
@@ -46,20 +42,14 @@ namespace WallpaperCreator.OnScreen {
 
             titleLabel.set_markup("<span font='Lato 20'>Done</span>");
 
-            var mv_command = @"sudo mv $(Environment.get_home_dir())/$(wallpaperName.replace(" ", "_").replace(".", "_").down()) /System/Resources/Komorebi";
-
-            descLabel.set_markup(@"<span font='Lato Light 12'>Open 'Terminal' then paste the following:\n<b>$mv_command</b>\nOnce done, you can change the wallpaper in <i>'Change Wallpaper'</i>.</span>");
-
             closeButton.margin_top = 20;
             closeButton.halign = Align.CENTER;
 
             // Signals
             closeButton.released.connect(() => {
-
                 print("My job is done. Good bye!\n");
                 Gtk.main_quit();
             });
-
 
             add(logo);
             add(titleLabel);
@@ -71,11 +61,10 @@ namespace WallpaperCreator.OnScreen {
 
         /* Creates a wallpaper */
         private void createWallpaper() {
-
             // Create a new directory
             wallpaperName = wallpaperName.replace(" ", "_").replace(".", "_").down();
 
-            var dirPath = @"$(Environment.get_home_dir())/$(wallpaperName)";
+            var dirPath = @"$(Environment.get_user_data_dir())/komorebi/$(wallpaperName)";
             File.new_for_path(dirPath).make_directory_with_parents();
             var configPath = dirPath + "/config";
             var configFile = File.new_for_path(configPath);
@@ -85,26 +74,19 @@ namespace WallpaperCreator.OnScreen {
             configKeyFile.set_string("Info", "WallpaperType", wallpaperType);
 
             if(wallpaperType == "video") {
-
                 var videoFileNameArray = filePath.split("/");
                 var videoFileName = videoFileNameArray[videoFileNameArray.length - 1];
                 configKeyFile.set_string("Info", "VideoFileName", videoFileName);
 
                 // Copy the video into our new dir
                 File.new_for_path(filePath).copy(File.new_for_path(dirPath + @"/$videoFileName"), FileCopyFlags.NONE);
-                
-
             } else if (wallpaperType == "web_page")
                 configKeyFile.set_string("Info", "WebPageUrl", webPageUrl);
 
-
             if(wallpaperType == "video" || wallpaperType == "web_page") {
-
                 // Move the thumbnail
                 File.new_for_path(thumbnailPath).copy(File.new_for_path(dirPath + "/wallpaper.jpg"), FileCopyFlags.NONE);
-            
             } else {
-
                 // Copy the wallpaper into our new dir
                 File.new_for_path(filePath).copy(File.new_for_path(dirPath + "/wallpaper.jpg"), FileCopyFlags.NONE);
             }
@@ -137,7 +119,6 @@ namespace WallpaperCreator.OnScreen {
 
 
             if(wallpaperType == "image") {
-
                 configKeyFile.set_boolean("Wallpaper", "Parallax", wallpaperParallax);
 
                 if(assetPath == null || assetPath == "")
@@ -160,7 +141,6 @@ namespace WallpaperCreator.OnScreen {
             var stream = new DataOutputStream (configFile.create (0));
             stream.put_string (configKeyFile.to_data ());
             stream.close ();
-
         }
     }
 }
