@@ -164,7 +164,8 @@ namespace Komorebi.Utilities {
 	public void readConfigurationFile () {
 
 		// Default values
-		wallpaperName = "foggy_sunny_mountain";
+        wallpaperName = "foggy_sunny_mountain";
+        wallpaperPath = @"/usr/share/komorebi/$wallpaperName";
 		timeTwentyFour = true;
 		showDesktopIcons = true;
 		enableVideoWallpapers = true;
@@ -196,14 +197,15 @@ namespace Komorebi.Utilities {
 			!configKeyFile.has_key(key_file_group, "TimeTwentyFour") ||
 			!configKeyFile.has_key(key_file_group, "ShowDesktopIcons") ||
 			!configKeyFile.has_key(key_file_group, "EnableVideoWallpapers")) {
-			
+
 			print("[WARNING]: invalid configuration file found. Fixing..\n");
 			updateConfigurationFile();
 			return;
 		}
 
 
-		wallpaperName = configKeyFile.get_string (key_file_group, "WallpaperName");
+        wallpaperName = configKeyFile.get_string (key_file_group, "WallpaperName");
+        wallpaperPath = configKeyFile.get_string (key_file_group, "WallpaperPath");
 		timeTwentyFour = configKeyFile.get_boolean (key_file_group, "TimeTwentyFour");
 		showDesktopIcons = configKeyFile.get_boolean (key_file_group, "ShowDesktopIcons");
 		enableVideoWallpapers = configKeyFile.get_boolean (key_file_group, "EnableVideoWallpapers");
@@ -216,6 +218,7 @@ namespace Komorebi.Utilities {
 		var key_file_group = "KomorebiProperties";
 
 		configKeyFile.set_string  (key_file_group, "WallpaperName", wallpaperName);
+		configKeyFile.set_string  (key_file_group, "WallpaperPath", wallpaperPath);
 		configKeyFile.set_boolean (key_file_group, "TimeTwentyFour", timeTwentyFour);
 		configKeyFile.set_boolean (key_file_group, "ShowDesktopIcons", showDesktopIcons);
 		configKeyFile.set_boolean (key_file_group, "EnableVideoWallpapers", enableVideoWallpapers);
@@ -249,17 +252,15 @@ namespace Komorebi.Utilities {
 	}
 
 	void readWallpaperFile () {
-
 		// check if the wallpaper exists
 		// also, make sure the wallpaper name is valid
-		var wallpaperPath = @"/System/Resources/Komorebi/$wallpaperName";
 		var wallpaperConfigPath = @"$wallpaperPath/config";
 
 		if(wallpaperName == null || !File.new_for_path(wallpaperPath).query_exists() ||
 			!File.new_for_path(wallpaperConfigPath).query_exists()) {
 
 			wallpaperName = "foggy_sunny_mountain";
-			wallpaperPath = @"/System/Resources/Komorebi/$wallpaperName";
+			wallpaperPath = @"/usr/share/komorebi/wallpapers/$wallpaperName";
 			wallpaperConfigPath = @"$wallpaperPath/config";
 
 			print(@"[ERROR]: got an invalid wallpaper. Setting to default: $wallpaperName\n");
@@ -317,7 +318,6 @@ namespace Komorebi.Utilities {
 
 		// Wallpaper base image
 		wallpaperParallax = wallpaperKeyFile.get_boolean("Wallpaper", "Parallax");
-
 		// Asset
 		assetVisible = wallpaperKeyFile.get_boolean ("Asset", "Visible");
 
@@ -328,7 +328,7 @@ namespace Komorebi.Utilities {
 		assetHeight = wallpaperKeyFile.get_integer ("Asset", "Height");
 
 		// Set GNOME's wallpaper to this
-		var wallpaperJpgPath = @"/System/Resources/Komorebi/$wallpaperName/wallpaper.jpg";
+		var wallpaperJpgPath = @"$wallpaperPath/wallpaper.jpg";
 		new GLib.Settings("org.gnome.desktop.background").set_string("picture-uri", ("file://" + wallpaperJpgPath));
 		new GLib.Settings("org.gnome.desktop.background").set_string("picture-options", "stretched");
 	}

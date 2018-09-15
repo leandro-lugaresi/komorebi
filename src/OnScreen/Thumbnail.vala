@@ -1,17 +1,17 @@
 //
 //  Copyright (C) 2012-2013 Abraham Masri @cheesecakeufo
 //
-//  This program is free software: you can redistribute it and/or modify it 
-//  under the terms of the GNU Lesser General Public License version 3, as published    
+//  This program is free software: you can redistribute it and/or modify it
+//  under the terms of the GNU Lesser General Public License version 3, as published
 //  by the Free Software Foundation.
-//  
-//  This program is distributed in the hope that it will be useful, but 
-//  WITHOUT ANY WARRANTY; without even the implied warranties of    
-//  MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR  
+//
+//  This program is distributed in the hope that it will be useful, but
+//  WITHOUT ANY WARRANTY; without even the implied warranties of
+//  MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 //  PURPOSE.  See the GNU General Public License for more details.
-//  
-//  You should have received a copy of the GNU General Public License along 
-//  with this program.  If not, see <http://www.gnu.org/licenses/>  
+//
+//  You should have received a copy of the GNU General Public License along
+//  with this program.  If not, see <http://www.gnu.org/licenses/>
 
 using Gtk;
 
@@ -22,10 +22,11 @@ namespace Komorebi.OnScreen {
 	private class Thumbnail : EventBox {
 
 		string name = "";
+		string path = "";
 
 		Overlay overlay = new Overlay();
 		Image thumbnailImage = new Image();
-		Image borderImage = new Image.from_file("/System/Resources/Komorebi/thumbnail_border.svg");
+		Image borderImage = new Image.from_file("/usr/share/komorebi/thumbnail_border.svg");
 		Revealer revealer = new Revealer();
 
 		// Signaled when clicked
@@ -47,16 +48,18 @@ namespace Komorebi.OnScreen {
 		public Thumbnail (string path, string name) {
 
 			this.name = name;
+			this.path = path;
 
-			thumbnailImage.pixbuf = new Gdk.Pixbuf.from_file_at_scale(path + name + "/wallpaper.jpg", 150, 100, false);
+			thumbnailImage.pixbuf = new Gdk.Pixbuf.from_file_at_scale(path+ "/wallpaper.jpg", 150, 100, false);
 
 			// Signals
 			button_release_event.connect(() => {
-				
-				wallpaperName = name;
+
+                wallpaperName = name;
+                wallpaperPath = path;
 				showBorder();
 				clicked();
-				
+
 				readWallpaperFile();
 				updateConfigurationFile();
 
@@ -80,7 +83,7 @@ namespace Komorebi.OnScreen {
 
 		public Thumbnail.Add() {
 
-			thumbnailImage.pixbuf = new Gdk.Pixbuf.from_file_at_scale("/System/Resources/Komorebi/thumbnail_add.svg", 150, 100, false);
+			thumbnailImage.pixbuf = new Gdk.Pixbuf.from_file_at_scale("/usr/share/komorebi/thumbnail_add.svg", 150, 100, false);
 
 		}
 

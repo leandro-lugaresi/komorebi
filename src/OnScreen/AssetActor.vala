@@ -54,7 +54,7 @@ namespace Komorebi.OnScreen {
             if(assetHeight <= 0)
                 assetHeight = screenHeight;
 
-            var assetPath = @"/System/Resources/Komorebi/$wallpaperName/assets.png";
+            var assetPath = @"$wallpaperPath/assets.png";
 
             // make sure the asset exists
             if(!File.new_for_path(assetPath).query_exists()) {
@@ -177,9 +177,9 @@ namespace Komorebi.OnScreen {
             if(wallpaperType == "video" ||
                 wallpaperType == "web_page" ||
                 assetAnimationMode == "noanimation") {
-                
+
                 if(assetAnimationTimeout > 0) {
-                
+
                     Source.remove(assetAnimationTimeout);
                     assetAnimationTimeout = 0;
                 }
