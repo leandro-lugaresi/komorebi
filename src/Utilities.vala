@@ -305,8 +305,11 @@ namespace Komorebi.Utilities {
 
 		if(wallpaperType == "video") {
 			videoFileName = wallpaperKeyFile.get_string("Info", "VideoFileName");
-			wallpaperParallax = assetVisible = false;
-			return;
+            wallpaperParallax = assetVisible = false;
+            var wallpaperJpgPath = @"$wallpaperPath/wallpaper.jpg";
+            new GLib.Settings("org.gnome.desktop.background").set_string("picture-uri", ("file://" + wallpaperJpgPath));
+            new GLib.Settings("org.gnome.desktop.background").set_string("picture-options", "stretched");
+            return;
 		}
 
 		if(wallpaperType == "web_page") {
